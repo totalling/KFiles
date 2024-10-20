@@ -8,18 +8,30 @@
 </head>
 <body>
     <div class="container">
-        <a href="/index.html" style="text-decoration: none;"><h1>KFiles</h1></a>
-        <label for="krakenLink">remove ads from KrakenFiles</label>
-        <h2 style="opacity: 45%;"><%= fileName %></h2>
+        <label for="krakenLink">Get krakenfiles file without the ads.</label>
+        <h2 style="opacity: 0.75;"><%= fileName %></h2>
         <iframe id="krakenIframe" width="100%" height="100px" frameborder="0" scrolling="no"></iframe>
-        <form id="dl-form" action="/download/<%= id %>" method="POST">
+        <form id="dl-form" action="/download/<%= id %>" method="POST" style="display: none;">
             <input type="hidden" name="token" id="dl-token" value="<%= token %>"/>
         </form>
         <button id="downloadButton">Download</button>
+        <div id="shareLink" style="display: none;">
+            <p><a id="shareLinkUrl" href="#" target="_blank"></a></p>
+        </div>
     </div>
-    <footer>
-        <p><img src="https://lh6.googleusercontent.com/proxy/qK7yaw-uQHuTiF9VmvSYr-eFONdi_QiwV7q8rQKazQfWBeqktok1LS-97udMAz3bt7gXaooQxYDOArJHIp06KyqB9uAmtVhgdZrpFZSxVwSsiQ" style="height: 50%; width: 50%;"></p>
-        <a href="https://github.com/b9natwo/KFiles" style="font-weight: bold; font-style: italic; opacity: 50%;">b9na 🎸</a>
+
+    <footer style="text-align: center; opacity: 0; animation: fadeIn 1.5s ease-in-out forwards;">
+        <p style="margin: 0; font-size: 1rem; color: #555; transition: color 0.3s ease;">
+            Original project &rarr;
+            <a href="https://github.com/b9natwo/KFiles" 
+               style="color: #444; text-decoration: none; font-weight: bold; position: relative; display: inline-block; transition: color 0.3s ease;"
+               onmouseover="this.style.color='#000';"
+               onmouseout="this.style.color='#444';">
+                b9na 🎸
+                <span class="underline" style="position: absolute; bottom: -2px; left: 0; height: 2px; width: 100%; background: #444; transform: scaleX(0); transform-origin: bottom right; transition: transform 0.3s ease;"></span>
+            </a>
+        </p>
+
     </footer>
     <script src="/script.js"></script>
     <script>
@@ -44,10 +56,14 @@
                 if (data.url) {
                     const link = document.createElement('a');
                     link.href = data.url;
-                    link.download = ''; // Optional: specify a filename here
+                    link.download = '';
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
+
+                    document.getElementById('shareLinkUrl').href = data.url;
+                    document.getElementById('shareLinkUrl').textContent = data.url;
+                    document.getElementById('shareLink').style.display = 'block';
                 } else {
                     alert('Error retrieving download URL');
                 }
